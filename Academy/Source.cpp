@@ -6,11 +6,6 @@ using namespace std;
 
 
 int main() {
-	/*Student s1 = createStudent();
-	Student s2 = createStudent();
-	showStudent(s1);
-	showStudent(s2);*/
-
 	uint size;
 	cout << "Enter size: ";
 	cin >> size;
@@ -22,11 +17,5 @@ int main() {
 	}
 	cout << "\n";
 	action(students, size);
-
-
-	cout << "\n";
-	
-
-	clear(students, size);
 	return 0;
 }

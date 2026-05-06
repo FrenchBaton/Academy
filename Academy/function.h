@@ -156,6 +156,7 @@ void action(Student* students, uint size) {
 		cin >> input_int;
 		switch (input_int) {
 		case EXIT:
+			clear(students, size);
 			return;
 			break;
 		case SHOW_LIST:
@@ -184,9 +185,3 @@ void action(Student* students, uint size) {
 		}
 	}
 }
-
-//EXIT,
-//SEARCH_BY_NAME,
-//SEARCH_BY_ID,
-//SORT_BY_NAME,
-//SORT_BY_AVERAGE
