@@ -6,7 +6,8 @@ enum MENU {
 	SEARCH_BY_NAME,
 	SEARCH_BY_ID,
 	SORT_BY_NAME,
-	SORT_BY_AVERAGE
+	SORT_BY_AVERAGE,
+	ADD_STUDENT
 };
 
 Student createStudent(){
@@ -37,13 +38,13 @@ Student createStudent(){
 }
 
 
-void clearNames(Student* students, uint size) {
+void clearNames(Student*& students, uint size) {
 	for (uint i = 0; i < size; i++) {
 		delete[] students[i].name;
 	}
 }
 
-void clear(Student* students, uint size) {
+void clear(Student*& students, uint size) {
 	clearNames(students, size);
 	delete[] students;
 }
@@ -57,7 +58,7 @@ void showStudent(const Student& std) {
 		<< std.birthdayDate.year << endl;
 }
 
-void showListOfStudents(Student* students, uint size) {
+void showListOfStudents(Student*& students, uint size) {
 	cout << "id" << '\t'
 		<< "name" << '\t'
 		<< "average" << '\t'
@@ -69,7 +70,7 @@ void showListOfStudents(Student* students, uint size) {
 	}
 }
 
-void searchById(Student* students, uint size, uint id) {
+void searchById(Student*& students, uint size, uint id) {
 	for (uint i = 0; i < size; i++) {
 		if (students[i].id == id) {
 			showStudent(students[i]);
@@ -79,7 +80,7 @@ void searchById(Student* students, uint size, uint id) {
 	cout << "Not found" << endl;
 }
 
-void searchByIdAction(Student* students, uint size) {
+void searchByIdAction(Student*& students, uint size) {
 	cin.ignore();
 	uint input_int;
 	cout << "Enter id(0 - Exit): ";
@@ -91,7 +92,7 @@ void searchByIdAction(Student* students, uint size) {
 	}
 }
 
-void searchByName(Student* students, uint size, char* name) {
+void searchByName(Student*& students, uint size, char* name) {
 	for (uint i = 0; i < size; i++) {
 		if (strcmp(students[i].name, name) == 0) {
 			showStudent(students[i]);
@@ -101,7 +102,7 @@ void searchByName(Student* students, uint size, char* name) {
 	cout << "Not found" << endl;
 }
 
-void searchByNameAction(Student* students, uint size) {
+void searchByNameAction(Student*& students, uint size) {
 	cin.ignore();
 	const int MAX_SIZE_INPUT_STR = 20;
 	char input_char[MAX_SIZE_INPUT_STR];
@@ -116,12 +117,12 @@ void searchByNameAction(Student* students, uint size) {
 	}
 }
 
-void sorting(Student* students, uint size,void(*sort)(Student* students, uint size)) {
+void sorting(Student*& students, uint size,void(*sort)(Student* students, uint size)) {
 	sort(students, size);
 
 }
 
-void sortByName(Student* students, uint size) {
+void sortByName(Student*& students, uint size) {
 	for (uint i = 0; i < size - 1; i++) {
 		for (uint j = 0; j < size - 1 - i; j++) {
 			if (strcmp(students[j].name, students[j+1].name) > 0) {
@@ -141,8 +142,23 @@ void sortByAverage(Student* students, uint size) {
 	}
 }
 
-void action(Student* students, uint size) {
-	cin.ignore();
+void addStudent(Student*& students, uint& size)
+{
+	Student* students_upd = new Student[size + 1];
+	for (int i = 0; i < size; i++)
+	{
+		students_upd[i] = students[i];
+	}
+	students_upd[size] = createStudent();
+	size++;
+	delete[] students;
+	students = students_upd;
+}
+
+void action() {
+	static uint size;
+	static Student* students;
+	
 	uint input_int;
 	while (true) {
 		cout << "What do you want to do?" << endl;
@@ -152,7 +168,9 @@ void action(Student* students, uint size) {
 			<< ", Search by ID - " << SEARCH_BY_ID
 			<< ", Sort by name - " << SORT_BY_NAME
 			<< ", Sort by average - " << SORT_BY_AVERAGE
+			<< ", Add a student - " << ADD_STUDENT
 			<< " )" << endl;
+		
 		cin >> input_int;
 		switch (input_int) {
 		case EXIT:
@@ -160,28 +178,38 @@ void action(Student* students, uint size) {
 			return;
 			break;
 		case SHOW_LIST:
+			if (size == 0) { break; }
 			showListOfStudents(students, size);
 			cout << "\n";
 			break;
 		case SEARCH_BY_NAME:
+			if (size == 0) { break; }
 			searchByNameAction(students, size);
 			cout << "\n";
 			break;
 		case SEARCH_BY_ID:
+			if (size == 0) { break; }
 			searchByIdAction(students, size);
 			cout << "\n";
 			break;
 		case SORT_BY_NAME:
+			if (size == 0) { break; }
 			sortByName(students, size);
 			cout << "\n";
 			break;
 		case SORT_BY_AVERAGE:
+			if (size == 0) { break; }
 			sortByAverage(students, size);
+			cout << "\n";
+			break;
+		case ADD_STUDENT:
+			addStudent(students, size);
 			cout << "\n";
 			break;
 		default:
 			cout << "Error. Try again" << endl;
 			break;
 		}
+		cin.ignore();
 	}
 }
