@@ -70,22 +70,26 @@ void clear(Student*& students, uint size) {
 	students = nullptr;
 }
 
+void firstLineInfo() {
+	cout << "<id>" << '\t'
+		<< "<name>" << '\t'
+		<< "<average>" << '\t'
+		<< "<day" << '.'
+		<< "month" << '.'
+		<< "year>" << endl;
+}
+
 void showStudent(const Student& std) {
 	cout << std.id << '\t'
 		<< std.name << '\t'
-		<< std.average << '\t'
+		<< std.average << "\t\t"
 		<< std.birthdayDate.day << '.'
 		<< std.birthdayDate.month << '.'
 		<< std.birthdayDate.year << endl;
 }
 
 void showListOfStudents(Student*& students, uint size) {
-	cout << "id" << '\t'
-		<< "name" << '\t'
-		<< "average" << '\t'
-		<< "day" << '.'
-		<< "month" << '.'
-		<< "year" << endl;
+	firstLineInfo();
 	for (uint i = 0; i < size; i++) {
 		showStudent(students[i]);
 	}
@@ -107,6 +111,7 @@ void searchByIdAction(Student*& students, uint size) {
 		cout << "Enter id(0 - Exit): ";
 		cin >> input_int;
 		if (input_int != 0 && searchId(students, size, input_int) != size) {
+			firstLineInfo();
 			showStudent(students[searchId(students, size, input_int)]);
 		}
 	} while (input_int != 0);
@@ -115,6 +120,7 @@ void searchByIdAction(Student*& students, uint size) {
 void searchByName(Student*& students, uint size, char* name) {
 	for (uint i = 0; i < size; i++) {
 		if (strcmp(students[i].name, name) == 0) {
+			firstLineInfo();
 			showStudent(students[i]);
 			return;
 		}
@@ -127,20 +133,13 @@ void searchByNameAction(Student*& students, uint size) {
 	const int MAX_SIZE_INPUT_STR = 20;
 	char input_char[MAX_SIZE_INPUT_STR];
 
-
-	cout << "Enter name(\"ex\" - Exit): ";
-	cin.getline(input_char, MAX_SIZE_INPUT_STR);
-	while (strcmp(input_char, "ex") != 0) {
-		searchByName(students, size, input_char);
+	while(true) {
 		cout << "Enter name(\"ex\" - Exit): ";
 		cin.getline(input_char, MAX_SIZE_INPUT_STR);
+		if (strcmp(input_char, "ex") == 0) { return; }
+		searchByName(students, size, input_char);
 	}
 }
-
-//void sorting(Student*& students, uint size,void(*sort)(Student* students, uint size)) {
-//	sort(students, size);
-//
-//}
 
 void sortByName(Student*& students, uint size) {
 	for (uint i = 0; i < size - 1; i++) {
@@ -226,7 +225,6 @@ void action() {
 	while (true) {
 		showMenu();
 		cout << "What do you want to do?" << endl;
-		
 		cin >> input_int;
 		cin.ignore();
 		switch (input_int) {
