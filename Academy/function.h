@@ -24,7 +24,7 @@ void showMenu() {
 	cout << "\t" << SORT_BY_ID << "\t - Sorting (by id)\n";
 	cout << "\t" << SORT_BY_AVERAGE << "\t - Sorting (by average)\n";
 	cout << "\t" << DEL_STUDENT << "\t - Delete a student\n";
-	//cout << "\t" <<  DEL_ALL_STUDENT << "\t - Delete all students\n";
+	cout << "\t" <<  DEL_ALL_STUDENT << "\t - Delete all students\n";
 	cout << "\t" << EXIT << "\t - Exit\n";
 	cout << "\n";
 
@@ -56,15 +56,18 @@ Student createStudent(){
 }
 
 
-void clearNames(Student*& students, uint size) {
-	for (uint i = 0; i < size; i++) {
-		delete[] students[i].name;
-	}
+void clearName(Student& student) {
+	delete[] student.name;
+	student.name = nullptr;
+
 }
 
 void clear(Student*& students, uint size) {
-	clearNames(students, size);
+	for (uint i = 0; i < size; i++) {
+		clearName(students[i]);
+	}
 	delete[] students;
+	students = nullptr;
 }
 
 void showStudent(const Student& std) {
@@ -186,8 +189,7 @@ void addStudent(Student*& students, uint& size)
 void delStudent(Student*& students, uint& size)
 {
 	if (size-1 == 0) { 
-		delete[] students;
-		students = nullptr;
+		clear(students, size);
 		size--;
 		return; 
 	}
@@ -196,6 +198,7 @@ void delStudent(Student*& students, uint& size)
 	cin >> input_int;
 	if (searchId(students, size, input_int) != size) {
 		uint idx = searchId(students, size, input_int);
+		clearName(students[idx]);
 		Student* students_upd = new Student[size - 1];
 		for (int i = 0; i < size-1; i++)
 		{
@@ -207,6 +210,12 @@ void delStudent(Student*& students, uint& size)
 		sortById(students, size);
 	}
 	showListOfStudents(students, size);
+}
+
+void delAllStudent(Student*& students, uint& size)
+{
+	clear(students, size);
+	size = 0;
 }
 
 void action() {
@@ -258,6 +267,11 @@ void action() {
 		case DEL_STUDENT:
 			if (size == 0) { break; }
 			delStudent(students, size);
+			cout << "\n";
+			break;
+		case DEL_ALL_STUDENT:
+			if (size == 0) { break; }
+			delAllStudent(students, size);
 			cout << "\n";
 			break;
 		case ADD_STUDENT:
