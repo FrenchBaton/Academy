@@ -2,6 +2,7 @@
 
 enum MENU {
 	EXIT,
+	ADD_STUDENT,
 	SHOW_LIST,
 	SEARCH_BY_NAME,
 	SEARCH_BY_ID,
@@ -9,8 +10,25 @@ enum MENU {
 	SORT_BY_ID,
 	SORT_BY_AVERAGE,
 	DEL_STUDENT,
-	ADD_STUDENT
+	DEL_ALL_STUDENT
 };
+
+void showMenu() {
+	cout << "\n........_________/----< MENU >----\\_________........\n";
+	cout << "\n";
+	cout << "\t" << ADD_STUDENT << "\t - Add a student\n";
+	cout << "\t" << SHOW_LIST << "\t - Show list of students\n";
+	cout << "\t" << SEARCH_BY_NAME << "\t - Search by name\n";
+	cout << "\t" << SEARCH_BY_ID << "\t - Search by ID\n";
+	cout << "\t" << SORT_BY_NAME << "\t - Sorting (by name)\n";
+	cout << "\t" << SORT_BY_ID << "\t - Sorting (by id)\n";
+	cout << "\t" << SORT_BY_AVERAGE << "\t - Sorting (by average)\n";
+	cout << "\t" << DEL_STUDENT << "\t - Delete a student\n";
+	//cout << "\t" <<  DEL_ALL_STUDENT << "\t - Delete all students\n";
+	cout << "\t" << EXIT << "\t - Exit\n";
+	cout << "\n";
+
+}
 
 Student createStudent(){
 	Student std{};
@@ -197,17 +215,8 @@ void action() {
 	
 	uint input_int;
 	while (true) {
+		showMenu();
 		cout << "What do you want to do?" << endl;
-		cout << "(Exit - " << EXIT
-			<< ", Show list of students - " << SHOW_LIST
-			<< ", Search by name - " << SEARCH_BY_NAME
-			<< ", Search by ID - " << SEARCH_BY_ID
-			<< ", Sort by name - " << SORT_BY_NAME
-			<< ", Sort by id - " << SORT_BY_ID
-			<< ", Sort by average - " << SORT_BY_AVERAGE
-			<< ", Delete a student - " << DEL_STUDENT
-			<< ", Add a student - " << ADD_STUDENT
-			<< " )" << endl;
 		
 		cin >> input_int;
 		cin.ignore();
